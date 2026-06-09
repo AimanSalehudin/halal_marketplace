@@ -7,8 +7,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-    </style>
+    body { 
+        font-family: 'Inter', sans-serif; 
+        scroll-behavior: smooth; /* This makes it scroll gracefully */
+        <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+    }
+</style>
 </head>
 <body class="bg-[#16171B] text-white min-h-screen flex flex-col">
 
@@ -34,11 +47,11 @@
 
 
         <div class="hidden lg:flex items-center gap-8 text-sm text-gray-300">
-            <a href="/" class="text-[#FF7900] font-medium border-b-2 border-[#FF7900] pb-1">Home</a>
-            <a href="/browse" class="hover:text-white transition-colors">Browse Menu</a>
-            <a href="/restaurants" class="hover:text-white transition-colors">Restaurants</a>
-            <a href="/track-order" class="hover:text-white transition-colors">Track Order</a>
-        </div>
+    <a href="/" class="text-[#FF7900] font-medium border-b-2 border-[#FF7900] pb-1">Home</a>
+    
+    <a href="#products-section" class="hover:text-white transition-colors">Browse Menu</a>
+    <a href="#restaurants-section" class="hover:text-white transition-colors">Restaurants</a>
+</div>
 
         <a href="/vendor/dashboard" class="bg-[#FF7900] hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition">
             My Account
@@ -116,57 +129,52 @@
         </div>
     </div>
 
-    <div class="bg-[#16171B] py-16">
+<div id="restaurants-section" class="bg-white text-gray-800 py-16">
     <div class="max-w-7xl mx-auto px-8">
-        <h2 class="text-3xl font-bold text-white mb-8">Available Products</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            @foreach($products as $product)
-            <div class="bg-white/5 border border-white/10 p-4 rounded-xl hover:border-[#FF7900] transition">
-                <h3 class="text-white font-semibold text-lg">{{ $product->name }}</h3>
-                <p class="text-gray-400 text-sm">{{ $product->category }}</p>
-                <div class="flex justify-between items-center mt-4">
-                    <span class="text-[#FF7900] font-bold">${{ $product->price }}</span>
-                    <span class="text-gray-400 text-xs">{{ $product->stock }} in stock</span>
+        <h2 class="text-2xl font-bold mb-8">Featured Restaurants</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @foreach($restaurants as $restaurant)
+            <a href="/restaurant/{{ $restaurant->id }}" class="block rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition">
+                <img src="{{ $restaurant->image_url }}" alt="{{ $restaurant->name }}" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="font-bold text-gray-800">{{ $restaurant->name }}</h3>
                 </div>
-            </div>
+            </a>
             @endforeach
         </div>
     </div>
 </div>
 
-    <div class="bg-white flex-1 text-gray-800 pt-16 pb-24">
-        <div class="max-w-7xl mx-auto px-8">
-            <div class="flex justify-between items-end mb-8">
-                <div>
-                    <h2 class="text-2xl font-bold flex items-center gap-2">
-                        <svg class="w-6 h-6 text-[#FF7900]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                        Featured Restaurants
-                    </h2>
-                    <p class="text-gray-500 text-sm mt-1">Top-rated halal-certified restaurants</p>
-                </div>
-                <a href="#" class="text-[#FF7900] font-medium hover:underline flex items-center gap-1 text-sm">
-                    View all <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                </a>
-            </div>
+<div id="products-section" class="bg-white text-gray-800 py-16">
+    <div class="max-w-7xl mx-auto px-8">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-bold text-gray-800">Browse Products</h2>
+            <span class="text-gray-500 text-sm">{{ $products->count() }} items found</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            @foreach($products as $product)
+            <a href="/product/{{ $product->id }}" class="bg-white border border-gray-200 p-4 rounded-2xl hover:shadow-lg transition block">
+                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-40 object-cover rounded-xl mb-4">
+                <h3 class="font-bold text-gray-800">{{ $product->name }}</h3>
+            </a>
+            @endforeach
+        </div>
+    </div>
+</div>
 
-            <form action="/search" method="GET" class="flex bg-white p-1.5 rounded-full mb-8 max-w-lg">
-            <input type="text" name="query" placeholder="Search..." class="flex-1 ...">
-            <button type="submit" class="bg-[#FF7900] ...">Search</button>
-            </form>
+            <div class="border-t border-gray-100 pt-16">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">Browse Products</h2>
+                    <span class="text-gray-500 text-sm">{{ $products->count() }} items found</span>
+                </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="rounded-2xl overflow-hidden relative shadow-sm border border-gray-100 group cursor-pointer">
-                    <div class="absolute top-4 right-4 bg-[#FF7900] text-white text-xs font-bold px-3 py-1.5 rounded-full z-10">Up to 20% off</div>
-                    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80" alt="Restaurant 1" class="w-full h-48 object-cover group-hover:scale-105 transition duration-500">
-                </div>
-                <div class="rounded-2xl overflow-hidden relative shadow-sm border border-gray-100 group cursor-pointer">
-                    <div class="absolute top-4 right-4 bg-[#FF7900] text-white text-xs font-bold px-3 py-1.5 rounded-full z-10">New</div>
-                    <img src="https://images.unsplash.com/photo-1589302168068-964664d93cb0?auto=format&fit=crop&w=600&q=80" alt="Restaurant 2" class="w-full h-48 object-cover group-hover:scale-105 transition duration-500">
-                </div>
-                <div class="rounded-2xl overflow-hidden relative shadow-sm border border-gray-100 group cursor-pointer">
-                    <div class="absolute top-4 right-4 bg-[#FF7900] text-white text-xs font-bold px-3 py-1.5 rounded-full z-10">Popular</div>
-                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80" alt="Restaurant 3" class="w-full h-48 object-cover group-hover:scale-105 transition duration-500">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                    @foreach($products as $product)
+                    <a href="/product/{{ $product->id }}" class="bg-white border border-gray-200 p-4 rounded-2xl hover:shadow-lg transition block">
+                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-40 object-cover rounded-xl mb-4">
+                        <h3 class="font-bold text-gray-800">{{ $product->name }}</h3>
+                        </a>
+                @endforeach
                 </div>
             </div>
         </div>

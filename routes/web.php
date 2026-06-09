@@ -7,8 +7,9 @@ use App\Models\Product;
 
 // This now loads your beautiful Home page
 Route::get('/', function () {
-    $products = Product::all(); // Fetch all products
-    return view('home', compact('products')); // Pass them to the view
+    $products = \App\Models\Product::all();
+    $restaurants = \App\Models\Restaurant::all(); // Fetch restaurants
+    return view('home', compact('products', 'restaurants'));
 });
 
 Route::get('/search', function (Request $request) {
@@ -25,6 +26,33 @@ Route::get('/vendor/dashboard', [ProductController::class, 'index']);
 // Add this to your routes/web.php file
 Route::get('/admin/dashboard', function () {
     return view('admin'); // This assumes your file is named 'admin.blade.php'
+});
+
+Route::get('/dev-links', function () {
+    return '
+        <div style="padding: 50px; font-family: sans-serif;">
+            <h1>Navigation Helper</h1>
+            <ul>
+                <li><a href="/">Buyer Homepage</a></li>
+                <li><a href="/vendor/dashboard">Vendor Dashboard</a></li>
+                <li><a href="/admin/dashboard">Admin Dashboard</a></li>
+            </ul>
+        </div>
+    ';
+});
+
+// Restaurant Details
+Route::get('/restaurant/{id}', function ($id) {
+    $restaurant = \App\Models\Restaurant::findOrFail($id);
+    return "Showing details for: " . $restaurant->name; 
+    // LATER: return view('restaurant.show', compact('restaurant'));
+});
+
+// Product Details
+Route::get('/product/{id}', function ($id) {
+    $product = \App\Models\Product::findOrFail($id);
+    return "Showing details for: " . $product->name;
+    // LATER: return view('product.show', compact('product'));
 });
 
 // Other routes...
