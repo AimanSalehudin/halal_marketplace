@@ -68,6 +68,8 @@ Route::get('/product/{id}', function ($id) {
     // LATER: return view('product.show', compact('product'));
 });
 
+Route::get('/products/filter', [ProductController::class, 'filter']);
+
 Route::get('/profile', function () {
     $user = (object)[
         'name' => 'Ahmad Bin Razak',

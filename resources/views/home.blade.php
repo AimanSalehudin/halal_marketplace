@@ -7,12 +7,34 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        /* General Styles */
+        body { font-family: 'Inter', sans-serif; }
+        html { 
+            scroll-behavior: smooth; 
+            scroll-padding-top: 80px; 
+        }
+
         /* Highlight state for active links */
-        .active-link { color: #FF7900 !important; border-bottom: 2px solid #FF7900; }
+        .active-link { 
+            color: #FF7900 !important; 
+            border-bottom: 2px solid #FF7900; 
+        }
+
+        /* Footer Fix for ScrollSpy */
+        footer#about-section {
+            min-height: 200px;
+        }
+
+        /* Header link hover state */
+        .nav-link {
+            padding-bottom: 4px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
-<body class="bg-[#16171B] text-white min-h-screen flex flex-col">
+
+<body id="top" class="bg-[#16171B] text-white min-h-screen flex flex-col">
 
     <div class="bg-[#FF7900] text-white text-xs py-2 px-8 flex justify-between items-center hidden md:flex">
         <div class="flex items-center gap-4">
@@ -26,7 +48,8 @@
         </div>
     </div>
 
-    <nav class="flex justify-between items-center py-5 px-8 bg-[#16171B] border-b border-white/5">
+    <nav class="sticky top-0 z-50 flex justify-between items-center py-5 px-8 bg-[#16171B]/90 backdrop-blur-md border-b border-white/5">
+
         <div>
             <h1 class="text-2xl font-bold text-[#FF7900] flex items-center gap-1">
                 Local'z <span class="text-white text-lg">+</span>
@@ -36,11 +59,12 @@
 
 
         <div class="hidden lg:flex items-center gap-8 text-sm text-gray-300">
-    <a href="/" class="text-[#FF7900] font-medium border-b-2 border-[#FF7900] pb-1">Home</a>
-    
-        <a href="#restaurants-section" class="hover:text-white transition-colors">Restaurants</a>
-    <a href="#products-section" class="hover:text-white transition-colors">Browse Menu</a>
-</div>
+            <a href="#top" id="link-home" class="nav-link">Home</a>
+            <a href="#restaurants-section" id="link-restaurants" class="nav-link">Restaurants</a>            
+            <a href="#products-section" id="link-products" class="nav-link">Browse Menu</a>
+            <a href="#about-section" id="link-about" class="nav-link">About Us</a>
+        </div>
+
     <div class="flex items-center gap-6">
     <a href="{{ route('cart.index') }}" class="relative text-gray-300 hover:text-white transition-colors">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,7 +101,7 @@
             </h2>
             
             <p class="text-gray-400 text-lg mb-8 max-w-md">
-                Discover fresh groceries and restaurant meals from verified halal vendors near you — all Shariah-compliant, all trusted.
+                Discover fresh groceries and restaurant meals from verified halal vendors near you. All Shariah-compliant. All trusted.
             </p>
 
             <form action="{{ route('search.results') }}" method="GET" class="flex bg-white p-1.5 rounded-full mb-8 max-w-lg">
@@ -182,14 +206,98 @@
         </div>
     </div>
 <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('#products-section, #restaurants-section, #about-section');
+
+    // 1. Smooth Scroll Handling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            // Specifically handle Home/Top
+            const target = href === '#top' ? document.body : document.querySelector(href);
+            
+            target.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
             });
         });
-    </script>
+    });
+
+    // 2. Highlighting using Intersection Observer
+    // rootMargin: 'top right bottom left'. 
+    // We set top to -100px to account for the sticky header height.
+    const observerOptions = {
+        root: null, 
+        rootMargin: '-100px 0px -50% 0px', 
+        threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Remove active class from all links
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('text-[#FF7900]', 'border-b-2', 'border-[#FF7900]');
+                });
+                
+                // Add active class to the corresponding link
+                const id = entry.target.getAttribute('id');
+                const activeLink = document.querySelector(`a[href="#${id}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('text-[#FF7900]', 'border-b-2', 'border-[#FF7900]');
+                }
+            }
+        });
+    }, observerOptions);
+
+    // Observe your sections
+    document.querySelectorAll('#products-section, #restaurants-section, #about-section').forEach(section => {
+    observer.observe(section);
+});
+
+    // Handle "Home" highlighting when at the top
+    window.addEventListener('scroll', () => {
+        if (window.scrollY < 150) {
+            navLinks.forEach(link => link.classList.remove('text-[#FF7900]', 'border-b-2', 'border-[#FF7900]'));
+            document.getElementById('link-home').classList.add('text-[#FF7900]', 'border-b-2', 'border-[#FF7900]');
+        }
+    });
+</script>
+
+<footer id="about-section" class="bg-[#0f1013] border-t border-white/5 py-16 px-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div>
+            <h1 class="text-2xl font-bold text-[#FF7900] mb-4">Local'z <span class="text-white text-lg">+</span></h1>
+            <p class="text-gray-400 text-sm">Connecting you to the best halal local eateries with ease.</p>
+        </div>
+
+        <div>
+            <h4 class="font-bold mb-4">About Us</h4>
+            <ul class="text-gray-400 text-sm space-y-2">
+                <li>Our Story</li>
+                <li>How it Works</li>
+                <li>Partner with Us</li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="font-bold mb-4">Legal</h4>
+            <ul class="text-gray-400 text-sm space-y-2">
+                <li>Privacy Policy</li>
+                <li>Terms of Service</li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="font-bold mb-4">Follow Us</h4>
+            <div class="flex gap-4">
+                <a href="#" class="text-gray-400 hover:text-[#FF7900]">Instagram</a>
+                <a href="#" class="text-gray-400 hover:text-[#FF7900]">Facebook</a>
+            </div>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
