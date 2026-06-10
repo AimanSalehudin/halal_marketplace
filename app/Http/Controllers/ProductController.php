@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Product; // Don't forget to include the Model!
+use App\Models\Product; // Included Model
 
 class ProductController extends Controller
 {
@@ -23,7 +23,6 @@ class ProductController extends Controller
     // 3. Save the new product to the database
     public function store(Request $request) 
     {
-        // Basic security: validate the incoming data
         $request->validate([
             'name' => 'required|string|max:255',
             'category' => 'required|string|max:255',
@@ -31,7 +30,6 @@ class ProductController extends Controller
             'stock' => 'required|integer',
         ]);
 
-        // Save to database
         Product::create([
             'name' => $request->name,
             'category' => $request->category,
@@ -40,18 +38,60 @@ class ProductController extends Controller
             'is_halal_certified' => true // Defaulting to true for the prototype
         ]);
 
-        // Send the user back to the dashboard
         return redirect('/');
     }
 
-    // 4. Delete the product
+    // NEW CONTENT -> 4. Show individual item dashboard from buyer perspective
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+        
+        // Fetch recommendations matching this item's category (excluding itself)
+        $relatedProducts = Product::where('category', $product->category)
+            ->where('id', '!=', $product->id)
+            ->take(4)
+            ->get();
+
+        // Looks directly for resources/views/product_detail.blade.php in your flat structure
+        return view('product_detail', compact('product', 'relatedProducts'));
+    }
+
+    // NEW CONTENT -> 5. Show edit form prefilled with product data
+    public function edit($id)
+    {
+        $product = Product::findOrFail($id);
+        
+        // Reuses your flat create view but passes the product data to populate fields
+        return view('create', compact('product'));
+    }
+
+    // NEW CONTENT -> 6. Update the product information in the database
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+        ]);
+
+        $product = Product::findOrFail($id);
+        $product->update([
+            'name' => $request->name,
+            'category' => $request->category,
+            'price' => $request->price,
+            'stock' => $request->stock,
+        ]);
+
+        return redirect('/');
+    }
+
+    // 7. Delete the product
     public function destroy($id) 
     {
-        // Find the product by its ID and delete it
         $product = Product::findOrFail($id);
         $product->delete();
 
-        // Send the user back to the dashboard
         return redirect('/');
     }
 }

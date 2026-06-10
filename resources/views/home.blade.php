@@ -7,21 +7,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-    body { 
-        font-family: 'Inter', sans-serif; 
-        scroll-behavior: smooth; /* This makes it scroll gracefully */
-        <script>
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
+        body { 
+            font-family: 'Inter', sans-serif; 
+            scroll-behavior: smooth;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if(target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
             });
         });
-    });
-</script>
-    }
-</style>
+    </script>
 </head>
 <body class="bg-[#16171B] text-white min-h-screen flex flex-col">
 
@@ -45,21 +50,18 @@
             <p class="text-[10px] text-gray-400 -mt-1">by theWebberz</p>
         </div>
 
-
         <div class="hidden lg:flex items-center gap-8 text-sm text-gray-300">
-    <a href="/" class="text-[#FF7900] font-medium border-b-2 border-[#FF7900] pb-1">Home</a>
-    
-    <a href="#products-section" class="hover:text-white transition-colors">Browse Menu</a>
-    <a href="#restaurants-section" class="hover:text-white transition-colors">Restaurants</a>
-</div>
+            <a href="/" class="text-[#FF7900] font-medium border-b-2 border-[#FF7900] pb-1">Home</a>
+            <a href="#products-section" class="hover:text-white transition-colors">Browse Menu</a>
+            <a href="#restaurants-section" class="hover:text-white transition-colors">Restaurants</a>
+        </div>
 
         <a href="/vendor/dashboard" class="bg-[#FF7900] hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition">
             My Account
         </a>
     </nav>
 
-    <div class="max-w-7xl mx-auto px-8 pt-16 pb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative">
-        
+    <div class="max-w-7xl mx-auto px-8 pt-16 pb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative w-full">
         <div class="absolute top-1/2 left-1/4 w-96 h-96 bg-[#FF7900]/10 rounded-full blur-3xl -z-10 transform -translate-y-1/2"></div>
 
         <div>
@@ -89,13 +91,12 @@
                 </button>
             </div>
 
-
             <div class="flex flex-wrap gap-3 mb-12">
-                <a href="/category/burger" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Halal Burger</a>
-                <a href="/category/biryani" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Biryani</a>
-                <a href="/category/lamb-chops" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Lamb Chops</a>
-                <a href="/category/dates" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Dates</a>
-                <a href="/category/shawarma" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Shawarma</a>
+                <a href="#" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Halal Burger</a>
+                <a href="#" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Biryani</a>
+                <a href="#" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Lamb Chops</a>
+                <a href="#" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Dates</a>
+                <a href="#" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Shawarma</a>
             </div>
 
             <div class="flex gap-12">
@@ -125,57 +126,46 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 <h3 class="absolute bottom-4 left-4 font-semibold text-lg">Biryani</h3>
             </div>
-
         </div>
     </div>
 
-<div id="restaurants-section" class="bg-white text-gray-800 py-16">
-    <div class="max-w-7xl mx-auto px-8">
-        <h2 class="text-2xl font-bold mb-8">Featured Restaurants</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            @foreach($restaurants as $restaurant)
-            <a href="/restaurant/{{ $restaurant->id }}" class="block rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition">
-                <img src="{{ $restaurant->image_url }}" alt="{{ $restaurant->name }}" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="font-bold text-gray-800">{{ $restaurant->name }}</h3>
-                </div>
-            </a>
-            @endforeach
-        </div>
-    </div>
-</div>
-
-<div id="products-section" class="bg-white text-gray-800 py-16">
-    <div class="max-w-7xl mx-auto px-8">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-2xl font-bold text-gray-800">Browse Products</h2>
-            <span class="text-gray-500 text-sm">{{ $products->count() }} items found</span>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            @foreach($products as $product)
-            <a href="/product/{{ $product->id }}" class="bg-white border border-gray-200 p-4 rounded-2xl hover:shadow-lg transition block">
-                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-40 object-cover rounded-xl mb-4">
-                <h3 class="font-bold text-gray-800">{{ $product->name }}</h3>
-            </a>
-            @endforeach
-        </div>
-    </div>
-</div>
-
-            <div class="border-t border-gray-100 pt-16">
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800">Browse Products</h2>
-                    <span class="text-gray-500 text-sm">{{ $products->count() }} items found</span>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                    @foreach($products as $product)
-                    <a href="/product/{{ $product->id }}" class="bg-white border border-gray-200 p-4 rounded-2xl hover:shadow-lg transition block">
-                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-40 object-cover rounded-xl mb-4">
-                        <h3 class="font-bold text-gray-800">{{ $product->name }}</h3>
-                        </a>
+    <div id="restaurants-section" class="bg-white text-gray-800 py-16">
+        <div class="max-w-7xl mx-auto px-8">
+            <h2 class="text-2xl font-bold mb-8">Featured Restaurants</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach($restaurants as $restaurant)
+                <a href="/restaurant/{{ $restaurant->id }}" class="block rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition bg-white">
+                    <img src="{{ $restaurant->image_url ?? 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=500' }}" alt="{{ $restaurant->name }}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-bold text-gray-800">{{ $restaurant->name }}</h3>
+                    </div>
+                </a>
                 @endforeach
-                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="products-section" class="bg-gray-50 text-gray-800 py-16 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800">Browse Products</h2>
+                <span class="text-gray-500 text-sm">{{ $products->count() }} items found</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                @foreach($products as $product)
+                <a href="/product/{{ $product->id }}" class="bg-white border border-gray-200 p-4 rounded-2xl hover:shadow-lg transition block group">
+                    <div class="w-full h-40 overflow-hidden rounded-xl mb-4 bg-gray-100">
+                        <img src="{{ $product->image_url ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400' }}" 
+                             alt="{{ $product->name }}" 
+                             class="w-full h-full object-cover group-hover:scale-102 transition">
+                    </div>
+                    <h3 class="font-bold text-gray-800 group-hover:text-[#FF7900] transition mb-1">{{ $product->name }}</h3>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-[#FF7900] font-bold">RM {{ number_format($product->price, 2) }}</span>
+                        <span class="text-xs text-gray-400">{{ $product->stock }} left</span>
+                    </div>
+                </a>
+                @endforeach
             </div>
         </div>
     </div>

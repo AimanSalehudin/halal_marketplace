@@ -16,8 +16,6 @@ Route::get('/search', function (Request $request) {
     $query = $request->input('query');
     $products = Product::where('name', 'like', "%$query%")->get();
     return view('search-results', compact('products', 'query'));
-    
-    // LATER: You will write database logic here to filter products
 });
 
 // Move the vendor dashboard to a specific URL
@@ -48,14 +46,12 @@ Route::get('/restaurant/{id}', function ($id) {
     // LATER: return view('restaurant.show', compact('restaurant'));
 });
 
-// Product Details
-Route::get('/product/{id}', function ($id) {
-    $product = \App\Models\Product::findOrFail($id);
-    return "Showing details for: " . $product->name;
-    // LATER: return view('product.show', compact('product'));
-});
+// CONNECTED: Product Details from Buyer Perspective
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('buyer.product.show');
 
-// Other routes...
-Route::get('/products/create', [ProductController::class, 'create']);
-Route::post('/products/store', [ProductController::class, 'store']);
-Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+// Product Vendor Actions & New Edit/Update Flow
+Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
+Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
+Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
+Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
