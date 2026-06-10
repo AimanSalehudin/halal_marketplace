@@ -11,11 +11,6 @@
         /* Highlight state for active links */
         .active-link { color: #FF7900 !important; border-bottom: 2px solid #FF7900; }
     </style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            scroll-behavior: smooth;
-        }
-    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -36,8 +31,19 @@
 
     <div class="bg-[#FF7900] text-white text-xs py-2 px-8 flex justify-between items-center hidden md:flex">
         <div class="flex items-center gap-4">
-            <span class="flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg> +60 11 3456 7890</span>
-            <span class="flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> Selangor, Malaysia</span>
+            <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                </svg> 
+                +60 11 3456 7890
+            </span>
+            <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg> 
+                Selangor, Malaysia
+            </span>
         </div>
         <div class="flex gap-6">
             <span>All products are 100% Halal Certified & Shariah-Compliant</span>
@@ -55,35 +61,27 @@
         </div>
 
         <div class="hidden lg:flex items-center gap-8 text-sm text-gray-300">
-    <a href="/" class="text-[#FF7900] font-medium border-b-2 border-[#FF7900] pb-1">Home</a>
-    
-        <a href="#restaurants-section" class="hover:text-white transition-colors">Restaurants</a>
-    <a href="#products-section" class="hover:text-white transition-colors">Browse Menu</a>
-</div>
-    <div class="flex items-center gap-6">
-    <a href="{{ route('cart.index') }}" class="relative text-gray-300 hover:text-white transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-        </svg>
-        @if(session('cart') && count(session('cart')) > 0)
-            <span class="absolute -top-2 -right-2 bg-[#FF7900] text-[10px] font-bold text-white px-1.5 rounded-full">
-                {{ count(session('cart')) }}
-            </span>
-        @endif
-    </a>
-
-    <a href="{{ route('profile.show') }}" class="bg-[#FF7900] hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-sm font-medium transition">
-        My Account
-    </a>
-</div>
             <a href="/" class="text-[#FF7900] font-medium border-b-2 border-[#FF7900] pb-1">Home</a>
-            <a href="#products-section" class="hover:text-white transition-colors">Browse Menu</a>
             <a href="#restaurants-section" class="hover:text-white transition-colors">Restaurants</a>
+            <a href="#products-section" class="hover:text-white transition-colors">Browse Menu</a>
         </div>
 
-        <a href="/vendor/dashboard" class="bg-[#FF7900] hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition">
-            My Account
-        </a>
+        <div class="flex items-center gap-6">
+            <a href="{{ route('cart.index') }}" class="relative text-gray-300 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                @if(session('cart') && count(session('cart')) > 0)
+                    <span class="absolute -top-2 -right-2 bg-[#FF7900] text-[10px] font-bold text-white px-1.5 rounded-full">
+                        {{ count(session('cart')) }}
+                    </span>
+                @endif
+            </a>
+
+            <a href="{{ route('profile.show') }}" class="bg-[#FF7900] hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-sm font-medium transition">
+                My Account
+            </a>
+        </div>
     </nav>
 
     <div class="max-w-7xl mx-auto px-8 pt-16 pb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative w-full">
@@ -116,19 +114,12 @@
                 </button>
             </form>
 
-            </div>
-
             <div class="flex flex-wrap gap-3 mb-12">
                 <a href="{{ route('search.results') }}?q=Halal Burger" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-[#FF7900] transition">Halal Burger</a>
                 <a href="{{ route('search.results') }}?q=Biryani" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-[#FF7900] transition">Biryani</a>
                 <a href="{{ route('search.results') }}?q=Lamb Chops" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-[#FF7900] transition">Lamb Chops</a>
                 <a href="{{ route('search.results') }}?q=Dates" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-[#FF7900] transition">Dates</a>
                 <a href="{{ route('search.results') }}?q=Shawarma" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-[#FF7900] transition">Shawarma</a>
-                <a href="#" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Halal Burger</a>
-                <a href="#" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Biryani</a>
-                <a href="#" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Lamb Chops</a>
-                <a href="#" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Dates</a>
-                <a href="#" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Shawarma</a>
             </div>
 
             <div class="flex gap-12">
@@ -161,30 +152,15 @@
         </div>
     </div>
 
-<div id="restaurants-section" class="bg-white text-gray-800 py-16">
-        <div class="max-w-7xl mx-auto px-8">
-            <h2 class="text-2xl font-bold mb-8">Featured Restaurants</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @foreach($restaurants as $restaurant)
-                <a href="/restaurant/{{ $restaurant->id }}" class="group block rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                    <img src="{{ $restaurant->image_url }}" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
-                    <div class="p-4 bg-white">
-                        <h3 class="font-bold text-gray-800">{{ $restaurant->name }}</h3>
-                    </div>
-                </a>
-                @endforeach
-            </div>
-        </div>
-    </div>
     <div id="restaurants-section" class="bg-white text-gray-800 py-16">
         <div class="max-w-7xl mx-auto px-8">
             <h2 class="text-2xl font-bold mb-8">Featured Restaurants</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 @foreach($restaurants as $restaurant)
-                <a href="/restaurant/{{ $restaurant->id }}" class="block rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition bg-white">
-                    <img src="{{ $restaurant->image_url ?? 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=500' }}" alt="{{ $restaurant->name }}" class="w-full h-48 object-cover">
+                <a href="/restaurant/{{ $restaurant->id }}" class="group block rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 bg-white">
+                    <img src="{{ $restaurant->image_url ?? 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=500' }}" alt="{{ $restaurant->name }}" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
                     <div class="p-4">
-                        <h3 class="font-bold text-gray-800">{{ $restaurant->name }}</h3>
+                        <h3 class="font-bold text-gray-800 group-hover:text-[#FF7900] transition-colors">{{ $restaurant->name }}</h3>
                     </div>
                 </a>
                 @endforeach
@@ -192,10 +168,10 @@
         </div>
     </div>
 
-<div id="products-section" class="bg-gray-50 text-gray-800 py-16">
+    <div id="products-section" class="bg-gray-50 text-gray-800 py-16 border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-8">
             <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold">Browse Products</h2>
+                <h2 class="text-2xl font-bold text-gray-800">Browse Products</h2>
                 <span class="text-gray-500 text-sm">{{ $products->count() }} items found</span>
             </div>
 
@@ -207,55 +183,34 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                 @foreach($products as $product)
-                <div class="bg-white border border-gray-200 p-4 rounded-2xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-                    <img src="{{ $product->image_url }}" class="w-full h-40 object-cover rounded-xl mb-3">
-                    <h3 class="font-bold text-gray-800">{{ $product->name }}</h3>
-                    <div class="flex items-center text-yellow-400 text-xs my-1">
-                        <span>★</span> <span>{{ $product->rating ?? '4.5' }}</span>
+                <a href="{{ route('buyer.product.show', $product->id) }}" class="group bg-white border border-gray-200 p-4 rounded-2xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between block cursor-pointer">
+                    <div>
+                        <div class="w-full h-40 overflow-hidden rounded-xl mb-3 bg-gray-100">
+                            <img src="{{ $product->image_url ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400' }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-1 group-hover:text-[#FF7900] transition-colors">{{ $product->name }}</h3>
+                        <div class="flex items-center text-yellow-400 text-xs my-1">
+                            <span>★</span> <span class="text-gray-600 ml-1">{{ $product->rating ?? '4.5' }}</span>
+                            <span class="text-gray-400 text-xs ml-auto">{{ $product->stock ?? 0 }} left</span>
+                        </div>
                     </div>
-                    <div class="flex justify-between items-center mt-3">
-                        <span class="text-[#FF7900] font-bold">RM {{ $product->price }}</span>
-                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                    
+                    <div class="flex justify-between items-center mt-4">
+                        <span class="text-[#FF7900] font-bold">RM {{ number_format($product->price, 2) }}</span>
+                        
+                        <form action="{{ route('cart.add', $product->id) }}" method="POST" onclick="event.stopPropagation();">
                             @csrf
-                            <button type="submit" class="bg-[#FF7900] text-white px-4 py-2 rounded-lg text-xs font-bold transition hover:bg-orange-700">
+                            <button type="submit" class="bg-[#FF7900] text-white px-4 py-2 rounded-lg text-xs font-bold transition hover:bg-orange-700 relative z-10">
                                 Add
                             </button>
                         </form>
                     </div>
-                </div>
-    <div id="products-section" class="bg-gray-50 text-gray-800 py-16 border-t border-gray-200">
-        <div class="max-w-7xl mx-auto px-8">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold text-gray-800">Browse Products</h2>
-                <span class="text-gray-500 text-sm">{{ $products->count() }} items found</span>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                @foreach($products as $product)
-                <a href="/product/{{ $product->id }}" class="bg-white border border-gray-200 p-4 rounded-2xl hover:shadow-lg transition block group">
-                    <div class="w-full h-40 overflow-hidden rounded-xl mb-4 bg-gray-100">
-                        <img src="{{ $product->image_url ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400' }}" 
-                             alt="{{ $product->name }}" 
-                             class="w-full h-full object-cover group-hover:scale-102 transition">
-                    </div>
-                    <h3 class="font-bold text-gray-800 group-hover:text-[#FF7900] transition mb-1">{{ $product->name }}</h3>
-                    <div class="flex justify-between items-center mt-2">
-                        <span class="text-[#FF7900] font-bold">RM {{ number_format($product->price, 2) }}</span>
-                        <span class="text-xs text-gray-400">{{ $product->stock }} left</span>
-                    </div>
                 </a>
                 @endforeach
             </div>
+
         </div>
     </div>
-<script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
+
 </body>
 </html>

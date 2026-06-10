@@ -23,12 +23,6 @@ Route::get('/', function (Request $request) {
 });
 
 Route::get('/search', function (Request $request) {
-<<<<<<< HEAD
-    $query = $request->input('query');
-    $products = Product::where('name', 'like', "%$query%")->get();
-    return view('search-results', compact('products', 'query'));
-});
-=======
     $query = $request->input('q');
 
     // Search both models
@@ -37,7 +31,6 @@ Route::get('/search', function (Request $request) {
 
     return view('search_results', compact('products', 'restaurants', 'query'));
 })->name('search.results');
->>>>>>> 3fe49b613615767e0f997da9dbd657c7b7d35ea9
 
 // Move the vendor dashboard to a specific URL
 Route::get('/vendor/dashboard', [ProductController::class, 'index']);
@@ -71,14 +64,6 @@ Route::get('/restaurant/{id}', function ($id) {
 // CONNECTED: Product Details from Buyer Perspective
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('buyer.product.show');
 
-<<<<<<< HEAD
-// Product Vendor Actions & New Edit/Update Flow
-Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
-Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
-Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
-Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
-Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
-=======
 Route::get('/profile', function () {
     $user = (object)[
         'name' => 'Ahmad Bin Razak',
@@ -106,4 +91,3 @@ Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 Route::post('/admin/products/{product}/approve-halal', [AdminController::class, 'approveCertification']);
 Route::post('/admin/products/{product}/revoke-halal', [AdminController::class, 'revokeCertification']);
 Route::delete('/admin/products/{product}', [AdminController::class, 'destroyProduct']);
->>>>>>> 3fe49b613615767e0f997da9dbd657c7b7d35ea9
