@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Restaurant;
@@ -35,9 +36,7 @@ Route::get('/search', function (Request $request) {
 Route::get('/vendor/dashboard', [ProductController::class, 'index']);
 
 // Add this to your routes/web.php file
-Route::get('/admin/dashboard', function () {
-    return view('admin'); // This assumes your file is named 'admin.blade.php'
-});
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
 
 Route::get('/dev-links', function () {
     return '
@@ -93,3 +92,6 @@ Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 Route::post('/checkout', [CartController::class, 'checkout']);
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::post('/admin/products/{product}/approve-halal', [AdminController::class, 'approveCertification']);
+Route::post('/admin/products/{product}/revoke-halal', [AdminController::class, 'revokeCertification']);
+Route::delete('/admin/products/{product}', [AdminController::class, 'destroyProduct']);
