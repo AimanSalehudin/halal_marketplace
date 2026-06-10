@@ -7,6 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        /* Highlight state for active links */
+        .active-link { color: #FF7900 !important; border-bottom: 2px solid #FF7900; }
+    </style>
         body { 
             font-family: 'Inter', sans-serif; 
             scroll-behavior: smooth;
@@ -51,6 +55,27 @@
         </div>
 
         <div class="hidden lg:flex items-center gap-8 text-sm text-gray-300">
+    <a href="/" class="text-[#FF7900] font-medium border-b-2 border-[#FF7900] pb-1">Home</a>
+    
+        <a href="#restaurants-section" class="hover:text-white transition-colors">Restaurants</a>
+    <a href="#products-section" class="hover:text-white transition-colors">Browse Menu</a>
+</div>
+    <div class="flex items-center gap-6">
+    <a href="{{ route('cart.index') }}" class="relative text-gray-300 hover:text-white transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+        </svg>
+        @if(session('cart') && count(session('cart')) > 0)
+            <span class="absolute -top-2 -right-2 bg-[#FF7900] text-[10px] font-bold text-white px-1.5 rounded-full">
+                {{ count(session('cart')) }}
+            </span>
+        @endif
+    </a>
+
+    <a href="{{ route('profile.show') }}" class="bg-[#FF7900] hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-sm font-medium transition">
+        My Account
+    </a>
+</div>
             <a href="/" class="text-[#FF7900] font-medium border-b-2 border-[#FF7900] pb-1">Home</a>
             <a href="#products-section" class="hover:text-white transition-colors">Browse Menu</a>
             <a href="#restaurants-section" class="hover:text-white transition-colors">Restaurants</a>
@@ -81,17 +106,24 @@
                 Discover fresh groceries and restaurant meals from verified halal vendors near you — all Shariah-compliant, all trusted.
             </p>
 
-            <div class="flex bg-white p-1.5 rounded-full mb-8 max-w-lg">
+            <form action="{{ route('search.results') }}" method="GET" class="flex bg-white p-1.5 rounded-full mb-8 max-w-lg">
                 <div class="flex items-center pl-4 text-gray-400">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
-                <input type="text" placeholder="Search food, groceries, or restaurants..." class="flex-1 bg-transparent border-none focus:ring-0 text-gray-800 px-3 py-2 outline-none w-full">
-                <button class="bg-[#FF7900] hover:bg-orange-600 text-white px-8 py-3 rounded-full font-medium transition">
+                <input type="text" name="q" placeholder="Search food, groceries, or restaurants..." class="flex-1 bg-transparent border-none focus:ring-0 text-gray-800 px-3 py-2 outline-none w-full" required>
+                <button type="submit" class="bg-[#FF7900] hover:bg-orange-600 text-white px-8 py-3 rounded-full font-medium transition">
                     Search
                 </button>
+            </form>
+
             </div>
 
             <div class="flex flex-wrap gap-3 mb-12">
+                <a href="{{ route('search.results') }}?q=Halal Burger" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-[#FF7900] transition">Halal Burger</a>
+                <a href="{{ route('search.results') }}?q=Biryani" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-[#FF7900] transition">Biryani</a>
+                <a href="{{ route('search.results') }}?q=Lamb Chops" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-[#FF7900] transition">Lamb Chops</a>
+                <a href="{{ route('search.results') }}?q=Dates" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-[#FF7900] transition">Dates</a>
+                <a href="{{ route('search.results') }}?q=Shawarma" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-[#FF7900] transition">Shawarma</a>
                 <a href="#" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Halal Burger</a>
                 <a href="#" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Biryani</a>
                 <a href="#" class="bg-white/5 border border-white/10 text-gray-300 px-4 py-1.5 rounded-full text-sm hover:bg-white/10 transition">Lamb Chops</a>
@@ -129,6 +161,21 @@
         </div>
     </div>
 
+<div id="restaurants-section" class="bg-white text-gray-800 py-16">
+        <div class="max-w-7xl mx-auto px-8">
+            <h2 class="text-2xl font-bold mb-8">Featured Restaurants</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach($restaurants as $restaurant)
+                <a href="/restaurant/{{ $restaurant->id }}" class="group block rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <img src="{{ $restaurant->image_url }}" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-bold text-gray-800">{{ $restaurant->name }}</h3>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
     <div id="restaurants-section" class="bg-white text-gray-800 py-16">
         <div class="max-w-7xl mx-auto px-8">
             <h2 class="text-2xl font-bold mb-8">Featured Restaurants</h2>
@@ -145,6 +192,37 @@
         </div>
     </div>
 
+<div id="products-section" class="bg-gray-50 text-gray-800 py-16">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold">Browse Products</h2>
+                <span class="text-gray-500 text-sm">{{ $products->count() }} items found</span>
+            </div>
+
+            <div class="flex flex-wrap gap-3 mb-10">
+                <a href="/?category=Burgers" class="px-4 py-1.5 rounded-full text-sm border transition-all duration-300 hover:bg-[#FF7900] hover:text-white hover:border-[#FF7900] {{ request('category') == 'Burgers' ? 'bg-[#FF7900] text-white' : 'bg-white border-gray-300' }}">Burgers</a>
+                <a href="/?category=Rice Dishes" class="px-4 py-1.5 rounded-full text-sm border transition-all duration-300 hover:bg-[#FF7900] hover:text-white hover:border-[#FF7900] {{ request('category') == 'Rice Dishes' ? 'bg-[#FF7900] text-white' : 'bg-white border-gray-300' }}">Rice Dishes</a>
+                <a href="/" class="px-4 py-1.5 rounded-full text-sm border transition-all duration-300 hover:bg-[#FF7900] hover:text-white hover:border-[#FF7900] {{ !request('category') ? 'bg-[#FF7900] text-white' : 'bg-white border-gray-300' }}">All</a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                @foreach($products as $product)
+                <div class="bg-white border border-gray-200 p-4 rounded-2xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                    <img src="{{ $product->image_url }}" class="w-full h-40 object-cover rounded-xl mb-3">
+                    <h3 class="font-bold text-gray-800">{{ $product->name }}</h3>
+                    <div class="flex items-center text-yellow-400 text-xs my-1">
+                        <span>★</span> <span>{{ $product->rating ?? '4.5' }}</span>
+                    </div>
+                    <div class="flex justify-between items-center mt-3">
+                        <span class="text-[#FF7900] font-bold">RM {{ $product->price }}</span>
+                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="bg-[#FF7900] text-white px-4 py-2 rounded-lg text-xs font-bold transition hover:bg-orange-700">
+                                Add
+                            </button>
+                        </form>
+                    </div>
+                </div>
     <div id="products-section" class="bg-gray-50 text-gray-800 py-16 border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-8">
             <div class="flex justify-between items-center mb-8">
@@ -169,6 +247,15 @@
             </div>
         </div>
     </div>
-
+<script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>

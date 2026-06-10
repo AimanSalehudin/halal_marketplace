@@ -2,29 +2,48 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Restaurant;
 
 // This now loads your beautiful Home page
-Route::get('/', function () {
-    $products = \App\Models\Product::all();
-    $restaurants = \App\Models\Restaurant::all(); // Fetch restaurants
+Route::get('/', function (Request $request) {
+    $category = $request->query('category');
+    
+    // If a category is selected, filter; otherwise, show all
+    $products = $category 
+        ? Product::where('category', $category)->get() 
+        : Product::all();
+        
+    $restaurants = \App\Models\Restaurant::all();
     return view('home', compact('products', 'restaurants'));
 });
 
 Route::get('/search', function (Request $request) {
+<<<<<<< HEAD
     $query = $request->input('query');
     $products = Product::where('name', 'like', "%$query%")->get();
     return view('search-results', compact('products', 'query'));
 });
+=======
+    $query = $request->input('q');
+
+    // Search both models
+    $products = Product::where('name', 'like', "%{$query}%")->get();
+    $restaurants = Restaurant::where('name', 'like', "%{$query}%")->get();
+
+    return view('search_results', compact('products', 'restaurants', 'query'));
+})->name('search.results');
+>>>>>>> 3fe49b613615767e0f997da9dbd657c7b7d35ea9
 
 // Move the vendor dashboard to a specific URL
 Route::get('/vendor/dashboard', [ProductController::class, 'index']);
 
 // Add this to your routes/web.php file
-Route::get('/admin/dashboard', function () {
-    return view('admin'); // This assumes your file is named 'admin.blade.php'
-});
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
 
 Route::get('/dev-links', function () {
     return '
@@ -41,17 +60,50 @@ Route::get('/dev-links', function () {
 
 // Restaurant Details
 Route::get('/restaurant/{id}', function ($id) {
+    // Ensure you have a 'products' relationship in your Restaurant model
     $restaurant = \App\Models\Restaurant::findOrFail($id);
-    return "Showing details for: " . $restaurant->name; 
-    // LATER: return view('restaurant.show', compact('restaurant'));
+    // Fetch products that match the restaurant name (or use a restaurant_id foreign key)
+    $products = \App\Models\Product::where('vendor_name', $restaurant->name)->get();
+    
+    return view('restaurant.show', compact('restaurant', 'products'));
 });
 
 // CONNECTED: Product Details from Buyer Perspective
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('buyer.product.show');
 
+<<<<<<< HEAD
 // Product Vendor Actions & New Edit/Update Flow
 Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
 Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
 Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
 Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
 Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+=======
+Route::get('/profile', function () {
+    $user = (object)[
+        'name' => 'Ahmad Bin Razak',
+        'email' => 'ahmad@example.com',
+        'phone' => '+60 11 3456 7890',
+        'address' => 'Selangor, Malaysia'
+    ];
+    
+    // Fetch the data
+    $orders = \App\Models\Order::all();
+    
+    // Pass BOTH variables to the view
+    return view('profile.show', compact('user', 'orders'));
+})->name('profile.show');
+
+// Other routes...
+Route::get('/products/create', [ProductController::class, 'create']);
+Route::post('/products/store', [ProductController::class, 'store']);
+Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+
+// Cart routes
+Route::post('/checkout', [CartController::class, 'checkout']);
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::post('/admin/products/{product}/approve-halal', [AdminController::class, 'approveCertification']);
+Route::post('/admin/products/{product}/revoke-halal', [AdminController::class, 'revokeCertification']);
+Route::delete('/admin/products/{product}', [AdminController::class, 'destroyProduct']);
+>>>>>>> 3fe49b613615767e0f997da9dbd657c7b7d35ea9
