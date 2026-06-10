@@ -2,24 +2,35 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Restaurant;
 
 // This now loads your beautiful Home page
-Route::get('/', function () {
-    $products = \App\Models\Product::all();
-    $restaurants = \App\Models\Restaurant::all(); // Fetch restaurants
+Route::get('/', function (Request $request) {
+    $category = $request->query('category');
+    
+    // If a category is selected, filter; otherwise, show all
+    $products = $category 
+        ? Product::where('category', $category)->get() 
+        : Product::all();
+        
+    $restaurants = \App\Models\Restaurant::all();
     return view('home', compact('products', 'restaurants'));
 });
 
 Route::get('/search', function (Request $request) {
-    $query = $request->input('query');
-    $products = Product::where('name', 'like', "%$query%")->get();
-    return view('search-results', compact('products', 'query'));
-    
-    // LATER: You will write database logic here to filter products
-});
+    $query = $request->input('q');
+
+    // Search both models
+    $products = Product::where('name', 'like', "%{$query}%")->get();
+    $restaurants = Restaurant::where('name', 'like', "%{$query}%")->get();
+
+    return view('search_results', compact('products', 'restaurants', 'query'));
+})->name('search.results');
 
 // Move the vendor dashboard to a specific URL
 Route::get('/vendor/dashboard', [ProductController::class, 'index']);
@@ -42,9 +53,12 @@ Route::get('/dev-links', function () {
 
 // Restaurant Details
 Route::get('/restaurant/{id}', function ($id) {
+    // Ensure you have a 'products' relationship in your Restaurant model
     $restaurant = \App\Models\Restaurant::findOrFail($id);
-    return "Showing details for: " . $restaurant->name; 
-    // LATER: return view('restaurant.show', compact('restaurant'));
+    // Fetch products that match the restaurant name (or use a restaurant_id foreign key)
+    $products = \App\Models\Product::where('vendor_name', $restaurant->name)->get();
+    
+    return view('restaurant.show', compact('restaurant', 'products'));
 });
 
 // Product Details
@@ -54,10 +68,30 @@ Route::get('/product/{id}', function ($id) {
     // LATER: return view('product.show', compact('product'));
 });
 
+Route::get('/profile', function () {
+    $user = (object)[
+        'name' => 'Ahmad Bin Razak',
+        'email' => 'ahmad@example.com',
+        'phone' => '+60 11 3456 7890',
+        'address' => 'Selangor, Malaysia'
+    ];
+    
+    // Fetch the data
+    $orders = \App\Models\Order::all();
+    
+    // Pass BOTH variables to the view
+    return view('profile.show', compact('user', 'orders'));
+})->name('profile.show');
+
 // Other routes...
 Route::get('/products/create', [ProductController::class, 'create']);
 Route::post('/products/store', [ProductController::class, 'store']);
 Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+
+// Cart routes
+Route::post('/checkout', [CartController::class, 'checkout']);
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 Route::post('/admin/products/{product}/approve-halal', [AdminController::class, 'approveCertification']);
 Route::post('/admin/products/{product}/revoke-halal', [AdminController::class, 'revokeCertification']);
 Route::delete('/admin/products/{product}', [AdminController::class, 'destroyProduct']);

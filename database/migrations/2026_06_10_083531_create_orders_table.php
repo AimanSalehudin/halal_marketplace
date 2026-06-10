@@ -10,11 +10,15 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::table('products', function (Blueprint $table) {
-            $table->string('image_url')->nullable();
-        });
-    }
+{
+    Schema::create('orders', function (Blueprint $table) {
+        $table->id();
+        $table->string('product_name');
+        $table->decimal('price', 8, 2);
+        $table->timestamp('ordered_at');
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.
@@ -24,5 +28,6 @@ return new class extends Migration
         Schema::table('products', function (Blueprint $table) {
             $table->dropColumn('image_url');
         });
+        Schema::dropIfExists('orders');
     }
 };
