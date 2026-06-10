@@ -1,63 +1,27 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
-use Illuminate\Http\Request;
-use App\Models\Product;
+use App\Http\Controllers\ProductController;
 
-// This now loads your beautiful Home page
 Route::get('/', function () {
-    $products = \App\Models\Product::all();
-    $restaurants = \App\Models\Restaurant::all(); // Fetch restaurants
-    return view('home', compact('products', 'restaurants'));
+    return view('welcome'); // you can change back to home later
 });
 
-Route::get('/search', function (Request $request) {
-    $query = $request->input('query');
-    $products = Product::where('name', 'like', "%$query%")->get();
-    return view('search-results', compact('products', 'query'));
-    
-    // LATER: You will write database logic here to filter products
-});
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Move the vendor dashboard to a specific URL
+// ✅ YOUR PROJECT ROUTES
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
 Route::get('/vendor/dashboard', [ProductController::class, 'index']);
 
-// Add this to your routes/web.php file
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
-
-Route::get('/dev-links', function () {
-    return '
-        <div style="padding: 50px; font-family: sans-serif;">
-            <h1>Navigation Helper</h1>
-            <ul>
-                <li><a href="/">Buyer Homepage</a></li>
-                <li><a href="/vendor/dashboard">Vendor Dashboard</a></li>
-                <li><a href="/admin/dashboard">Admin Dashboard</a></li>
-            </ul>
-        </div>
-    ';
+// ✅ Breeze routes
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Restaurant Details
-Route::get('/restaurant/{id}', function ($id) {
-    $restaurant = \App\Models\Restaurant::findOrFail($id);
-    return "Showing details for: " . $restaurant->name; 
-    // LATER: return view('restaurant.show', compact('restaurant'));
-});
-
-// Product Details
-Route::get('/product/{id}', function ($id) {
-    $product = \App\Models\Product::findOrFail($id);
-    return "Showing details for: " . $product->name;
-    // LATER: return view('product.show', compact('product'));
-});
-
-// Other routes...
-Route::get('/products/create', [ProductController::class, 'create']);
-Route::post('/products/store', [ProductController::class, 'store']);
-Route::delete('/products/{id}', [ProductController::class, 'destroy']);
-Route::post('/admin/products/{product}/approve-halal', [AdminController::class, 'approveCertification']);
-Route::post('/admin/products/{product}/revoke-halal', [AdminController::class, 'revokeCertification']);
-Route::delete('/admin/products/{product}', [AdminController::class, 'destroyProduct']);
+require __DIR__.'/auth.php';
