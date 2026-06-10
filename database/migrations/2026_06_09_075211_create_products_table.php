@@ -18,6 +18,11 @@ return new class extends Migration
         $table->decimal('price', 8, 2);
         $table->integer('stock');
         $table->boolean('is_halal_certified')->default(true);
+                    $table->string('image_url')->nullable();
+        // In your create_products_table migration
+        $table->string('vendor_name')->nullable(); // Add this line to create the vendor_name column
+        $table->decimal('rating', 2, 1);
+        $table->text('description')->nullable();
         $table->timestamps();
     });
 }
