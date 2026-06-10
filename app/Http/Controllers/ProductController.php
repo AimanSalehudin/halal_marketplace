@@ -94,4 +94,16 @@ class ProductController extends Controller
 
         return redirect('/');
     }
+
+    public function filter(Request $request) {
+    $category = $request->query('category');
+    
+    // Fetch products based on category
+    $products = ($category === 'All') 
+        ? Product::all() 
+        : Product::where('category', $category)->get();
+
+    // Return a partial view
+    return view('partials.product-grid', compact('products'));
+}
 }
