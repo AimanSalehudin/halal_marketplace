@@ -112,6 +112,7 @@ Route::middleware('auth')->group(function () {
     // ✅ SHOW PROFILE (friend design)
     Route::get('/profile', function () {
         $user = auth()->user();
+        $orders = \App\Models\Order::all();
         return view('profile.show', compact('user'));
     })->name('profile.edit');
 
