@@ -39,9 +39,9 @@
             <div class="space-y-4">
                 <div class="aspect-[4/3] w-full bg-gray-900 rounded-2xl overflow-hidden flex items-center justify-center border border-gray-800/60 group shadow-2xl shadow-black">
                     <img src="{{ asset('images/products/' . ($product->image ?? 'placeholder.jpg')) }}" 
-                         alt="{{ $product->name }}" 
-                         class="object-cover w-full h-full transition duration-500 group-hover:scale-105"
-                         onerror="this.src='https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=800'">
+                        alt="{{ $product->name }}" 
+                        class="object-cover w-full h-full transition duration-500 group-hover:scale-105"
+                        onerror="this.src='https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=800'">
                 </div>
             </div>
 
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="bg-gray-950/80 p-6 rounded-2xl border border-gray-900 shadow-inner">
-                    <form action="#" method="POST" class="space-y-4">
+                    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="space-y-4">
                         @csrf
                         <div class="flex items-center justify-between border-b border-gray-900 pb-3">
                             <span class="text-xs font-semibold text-gray-400 tracking-wider">Availability</span>

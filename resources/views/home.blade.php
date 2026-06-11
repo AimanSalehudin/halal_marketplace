@@ -207,8 +207,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                 @foreach($products as $product)
-                <a href="/product/{{ $product->id }}" class="group bg-white border border-gray-200 p-4 rounded-2xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between block cursor-pointer">
-                    <div>
+                <a href="/product/{{ $product->id }}" class="group bg-white border border-gray-200 p-4 rounded-2xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between block cursor-pointer">                    <div>
                         <div class="w-full h-40 overflow-hidden rounded-xl mb-3 bg-gray-100">
                             <img src="{{ $product->image_url ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400' }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         </div>
