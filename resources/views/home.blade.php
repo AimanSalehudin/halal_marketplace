@@ -59,22 +59,28 @@
     </a>
 
 
-    @auth
-        <!-- ✅ After login -->
+   @auth
+    <!-- username -->
+    <span class="text-sm text-gray-300">
+        {{ auth()->user()->name }}
+    </span>
 
-        <span class="text-sm text-gray-300">
-            {{ auth()->user()->name }}
-        </span>
+    <!-- ✅ ADD THIS BUTTON -->
+    <a href="{{ route('profile.edit') }}"
+       class="bg-[#FF7900] hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-sm font-medium transition">
+        My Account
+    </a>
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit"
-                class="bg-[#FF7900] hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-sm font-medium transition">
-                Logout
-            </button>
-        </form>
+    <!-- logout -->
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf       
+        <button type="submit"
+            class="text-gray-300 hover:text-white text-sm transition">
+            Logout
+        </button>
 
-    @else
+    </form>
+@else
         <!-- ✅ Before login -->
 
         <a href="{{ route('login') }}"

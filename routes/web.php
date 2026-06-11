@@ -109,13 +109,18 @@ Route::delete('/admin/products/{product}', [AdminController::class, 'destroyProd
 // ✅ PROFILE ROUTES (VERY IMPORTANT)
 Route::middleware('auth')->group(function () {
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // ✅ SHOW PROFILE (friend design)
+    Route::get('/profile', function () {
+        $user = auth()->user();
+        return view('profile.show', compact('user'));
+    })->name('profile.edit');
 
+    // ✅ KEEP edit/update/delete (for later use)
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 });
+
 
 
 // ✅ LOGIN / REGISTER (DO NOT TOUCH)
