@@ -80,7 +80,7 @@
         </button>
 
     </form>
-@else
+    @else
         <!-- ✅ Before login -->
 
         <a href="{{ route('login') }}"
