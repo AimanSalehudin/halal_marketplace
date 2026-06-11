@@ -66,7 +66,7 @@
     </span>
 
     <!-- ✅ ADD THIS BUTTON -->
-    <a href="{{ route('profile.edit') }}"
+    <a href="{{ route('profile.show') }}"
        class="bg-[#FF7900] hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-sm font-medium transition">
         My Account
     </a>

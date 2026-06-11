@@ -113,8 +113,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', function () {
         $user = auth()->user();
         $orders = \App\Models\Order::all();
-        return view('profile.show', compact('user'));
-    })->name('profile.edit');
+        return view('profile.show', compact('user','orders'));
+    })->name('profile.show');
 
     // ✅ KEEP edit/update/delete (for later use)
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
