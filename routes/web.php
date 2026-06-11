@@ -1,43 +1,55 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AdminController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\ProfileController;
+
 use App\Models\Product;
 use App\Models\Restaurant;
 
-// This now loads your beautiful Home page
+/*
+|--------------------------------------------------------------------------
+| YOUR ORIGINAL SYSTEM (KEEP THIS)
+|--------------------------------------------------------------------------
+*/
+
+// ✅ HOMEPAGE
 Route::get('/', function (Request $request) {
     $category = $request->query('category');
-    
-    // If a category is selected, filter; otherwise, show all
-    $products = $category 
-        ? Product::where('category', $category)->get() 
+
+    $products = $category
+        ? Product::where('category', $category)->get()
         : Product::all();
-        
-    $restaurants = \App\Models\Restaurant::all();
+
+    $restaurants = Restaurant::all();
+
     return view('home', compact('products', 'restaurants'));
 });
 
-Route::get('/search', function (\Illuminate\Http\Request $request) {
+
+// ✅ SEARCH
+Route::get('/search', function (Request $request) {
     $query = $request->input('q');
 
-    // Search both models
     $products = Product::where('name', 'like', "%{$query}%")->get();
     $restaurants = Restaurant::where('name', 'like', "%{$query}%")->get();
 
     return view('search_results', compact('products', 'restaurants', 'query'));
+
 })->name('search.results');
 
-// Move the vendor dashboard to a specific URL
-Route::get('/vendor/dashboard', [ProductController::class, 'index']);
 
-// Add this to your routes/web.php file
+// ✅ DASHBOARDS
+Route::get('/vendor/dashboard', [ProductController::class, 'index']);
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
 
+
+// ✅ DEV LINKS
 Route::get('/dev-links', function () {
     return '
         <div style="padding: 50px; font-family: sans-serif;">
@@ -51,13 +63,12 @@ Route::get('/dev-links', function () {
     ';
 });
 
-// Restaurant Details
+
+// ✅ RESTAURANT
 Route::get('/restaurant/{id}', function ($id) {
-    // Ensure you have a 'products' relationship in your Restaurant model
-    $restaurant = \App\Models\Restaurant::findOrFail($id);
-    // Fetch products that match the restaurant name (or use a restaurant_id foreign key)
-    $products = \App\Models\Product::where('vendor_name', $restaurant->name)->get();
-    
+    $restaurant = Restaurant::findOrFail($id);
+    $products = Product::where('vendor_name', $restaurant->name)->get();
+
     return view('restaurant.show', compact('restaurant', 'products'));
 });
 
@@ -95,10 +106,44 @@ Route::get('/products/create', [ProductController::class, 'create']);
 Route::post('/products/store', [ProductController::class, 'store']);
 Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
-// Cart routes
-Route::post('/checkout', [CartController::class, 'checkout']);
+
+// ✅ CART
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::post('/checkout', [CartController::class, 'checkout']);
+
+
+// ✅ ADMIN ACTIONS
 Route::post('/admin/products/{product}/approve-halal', [AdminController::class, 'approveCertification']);
 Route::post('/admin/products/{product}/revoke-halal', [AdminController::class, 'revokeCertification']);
 Route::delete('/admin/products/{product}', [AdminController::class, 'destroyProduct']);
+
+
+/*
+|--------------------------------------------------------------------------
+| ✅ BREEZE AUTH SYSTEM (ADD THIS, DON'T REPLACE)
+|--------------------------------------------------------------------------
+*/
+
+
+
+// ✅ PROFILE ROUTES (VERY IMPORTANT)
+Route::middleware('auth')->group(function () {
+
+    // ✅ SHOW PROFILE (friend design)
+    Route::get('/profile', function () {
+        $user = auth()->user();
+        $orders = \App\Models\Order::all();
+        return view('profile.show', compact('user','orders'));
+    })->name('profile.show');
+
+    // ✅ KEEP edit/update/delete (for later use)
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+});
+
+
+
+// ✅ LOGIN / REGISTER (DO NOT TOUCH)
+require __DIR__.'/auth.php';
