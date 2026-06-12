@@ -93,35 +93,57 @@
     <div class="flex items-center gap-6">
     <a href="{{ route('cart.index') }}" class="relative text-gray-300 hover:text-white transition-colors">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+            </path>
         </svg>
+
         @if(session('cart') && count(session('cart')) > 0)
             <span class="absolute -top-2 -right-2 bg-[#FF7900] text-[10px] font-bold text-white px-1.5 rounded-full">
                 {{ count(session('cart')) }}
             </span>
         @endif
     </a>
-            <a href="/" class="text-[#FF7900] font-medium border-b-2 border-[#FF7900] pb-1">Home</a>
-            <a href="#restaurants-section" class="hover:text-white transition-colors">Restaurants</a>
-            <a href="#products-section" class="hover:text-white transition-colors">Browse Menu</a>
-        </div>
 
-        <div class="flex items-center gap-6">
-            <a href="{{ route('cart.index') }}" class="relative text-gray-300 hover:text-white transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                </svg>
-                @if(session('cart') && count(session('cart')) > 0)
-                    <span class="absolute -top-2 -right-2 bg-[#FF7900] text-[10px] font-bold text-white px-1.5 rounded-full">
-                        {{ count(session('cart')) }}
-                    </span>
-                @endif
-            </a>
 
-            <a href="{{ route('profile.show') }}" class="bg-[#FF7900] hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-sm font-medium transition">
-                My Account
-            </a>
-        </div>
+   @auth
+    <!-- username -->
+    <span class="text-sm text-gray-300">
+        {{ auth()->user()->name }}
+    </span>
+
+    <!-- ✅ ADD THIS BUTTON -->
+    <a href="{{ route('profile.show') }}"
+        class="bg-[#FF7900] hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-sm font-medium transition">
+        My Account
+    </a>
+
+    <!-- logout -->
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf       
+        <button type="submit"
+            class="text-gray-300 hover:text-white text-sm transition">
+            Logout
+        </button>
+
+    </form>
+    @else
+        <!-- ✅ Before login -->
+
+        <a href="{{ route('login') }}"
+        class="text-gray-300 hover:text-white transition">
+            Login
+        </a>
+
+        <a href="{{ route('register') }}"
+        class="border border-[#FF7900] text-[#FF7900] px-5 py-2 rounded-lg text-sm hover:bg-[#FF7900] hover:text-white transition">
+            Register
+        </a>
+    @endauth
+
+
+</div>
+
     </nav>
 
     <div class="max-w-7xl mx-auto px-8 pt-16 pb-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative w-full">
@@ -223,8 +245,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                 @foreach($products as $product)
-                <a href="{{ route('buyer.product.show', $product->id) }}" class="group bg-white border border-gray-200 p-4 rounded-2xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between block cursor-pointer">
-                    <div>
+                <a href="/product/{{ $product->id }}" class="group bg-white border border-gray-200 p-4 rounded-2xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between block cursor-pointer">                    <div>
                         <div class="w-full h-40 overflow-hidden rounded-xl mb-3 bg-gray-100">
                             <img src="{{ $product->image_url ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400' }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         </div>

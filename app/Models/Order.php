@@ -6,10 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    // Ensure the model knows it can handle these fields
     protected $fillable = [
-        'product_name', 
-        'price', 
-        'ordered_at'
+        'customer_name',
+        'customer_email',
+        'product_name',
+        'price',
+        'quantity',
+        'status',
+        'vendor_name',
+        'ordered_at',
+    ];
+
+    protected $casts = [
+        'ordered_at' => 'datetime',
     ];
 }
