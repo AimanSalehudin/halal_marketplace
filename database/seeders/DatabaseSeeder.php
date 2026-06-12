@@ -7,6 +7,7 @@ use App\Models\Product; // <--- 1. IMPORT THE PRODUCT MODEL
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Restaurant;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -42,6 +43,35 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Halal Pepperoni Pizza', 'category' => 'Pizzas', 'price' => 24.00, 'stock' => 30, 'image_url' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROHspWXnS9Xi0-ZRmPo0ClM0Wrv1fYWqq9eQ&s=600', 'rating' => 4.8, 'vendor_name' => 'Burger Palace', 'description' => 'Delicious halal-certified pepperoni pizza with a crispy crust.'],
             ['name' => 'Lamb Mandi', 'category' => 'Rice Dishes', 'price' => 28.00, 'stock' => 15, 'image_url' => 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600', 'rating' => 4.9, 'vendor_name' => 'Al-Mandi Grill', 'description' => 'Aromatic rice dish with tender lamb and traditional spices.'],
             ['name' => 'Halal Chicken Wings', 'category' => 'Snacks', 'price' => 14.00, 'stock' => 50, 'image_url' => 'https://d21klxpge3tttg.cloudfront.net/wp-content/uploads/2020/01/featured-honey-soy-chicken-wings-1024x640.jpg', 'rating' => 4.7, 'vendor_name' => 'Burger Palace', 'description' => 'Juicy halal-certified chicken wings with your choice of sauce.'],
+        ]);
+
+        $buyer = User::create([
+            'name' => 'buyer123',
+            'email' => 'buyer123@gmail.com',
+            'password' => Hash::make('buyer123'),
+            'role' => 'buyer',
+            'phone' => '1234567890', // Example phone number
+            'address' => 'Depan Kedai' // Example address
+        ]);
+
+        // Demo Account 2: The Vendor (Merchant managing Nasi Kandar Pelita)
+        $vendor = User::create([
+            'name' => 'vendor123',
+            'email' => 'vendor123@gmail.com',
+            'password' => Hash::make('vendor123'),
+            'role' => 'vendor',
+            'phone' => '0987654321', // Example phone number
+            'address' => 'Dalam Kedai' // Example address
+        ]);
+
+        // Demo Account 3: The Administrator (Platform Manager persona)
+        $admin = User::create([
+            'name' => 'admin123',
+            'email' => 'admin123@gmail.com',
+            'password' => Hash::make('admin123'),
+            'role' => 'admin',
+            'phone' => '0987654321', // Example phone number
+            'address' => 'Luar Kedai' // Example address
         ]);
     }
 }
